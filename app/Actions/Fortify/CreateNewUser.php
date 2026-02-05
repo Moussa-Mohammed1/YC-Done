@@ -33,7 +33,7 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($input['password']),
         ]);
 
-        if (isset($input['role']) && $input['role'] !== 'admin') {
+        if (isset($input['role'])) {
             $user->assignRole($input['role']);
         }
 

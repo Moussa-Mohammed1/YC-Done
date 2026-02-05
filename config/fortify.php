@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Features;
 
 return [
@@ -73,7 +74,18 @@ return [
     |
     */
 
-    'home' => '/dashboard',
+    'home' => function()
+    {
+        if (Auth::user()->hasRole('admin')) {
+            return route('admin.dashboard');
+        }
+        elseif (Auth::user()->hasRole('client')) {
+            return route('user.home');
+        }
+        elseif (Auth::user()->hasRole('restaurant_owner')) {
+            return route('user.home');
+        }
+    },
 
     /*
     |--------------------------------------------------------------------------

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('nom');
+            $table->string('status')->default('ACTIVE');
             $table->string('localisation');
             $table->foreignId('typeCuisine_id')->constrained('types_cuisine');
             $table->integer('capacite');

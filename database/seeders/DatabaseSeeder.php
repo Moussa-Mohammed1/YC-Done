@@ -19,10 +19,16 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
         ]);
 
-        
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+        ]);
+
+        User::factory(10)->create();
+
+        $this->call([
+            TypeCuisineSeeder::class,
+            RestaurantSeeder::class,
         ]);
     }
 }

@@ -18,9 +18,9 @@ class RestaurantController extends Controller
                 'restaurants.*',
                 'users.name as username',
                 'users.email as user_email',
-                'types_cuisine.nom as type_cuisine'
+                'types_cuisine.titre as type_cuisine'
             )
-            ->paginate(15);
+            ->paginate(5);
         $Ids = $restaurants->pluck('id');
         $photos = DB::table('photos')->whereIn('restaurant_id', $Ids)->groupBy('restaurant_id');
         $menus = DB::table('menus')->whereIn('restaurant_id', $Ids)->groupBy('restaurant_id');
@@ -40,6 +40,8 @@ class RestaurantController extends Controller
         DB::table('horaires')->where('restaurant_id', $restaurant->id)->delete();
         DB::table('favoris')->where('restaurant_id', $restaurant->id)->delete();
         $restaurant->delete();
-        return redirect()->route('admin.restaurants.index');
+        return response()->json([
+            'success' => true,
+        ]);
     }
 }

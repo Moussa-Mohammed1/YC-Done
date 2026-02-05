@@ -14,7 +14,10 @@ class DashboardController extends Controller
         $totalUsers = User::count();
         $totalRestaurants = DB::table('restaurants')->count();
         $latestRestaurants = DB::table('restaurants')
-                            ->orderBy('created_at', 'desc')->limit(5)->get();
-        return view('admin.dashboard', compact('totalUsers', 'totalRestaurants'));
+                            ->join('types_cuisine', 'types_cuisine.id', '=','restaurants.typeCuisine_id' )
+                            ->select('restaurants.*', 'types_cuisine.titre as type_cuisine')
+                            ->orderBy('restaurants.created_at', 'desc')
+                            ->limit(5)->get();
+        return view('admin.dashboard', compact('totalUsers', 'totalRestaurants', 'latestRestaurants'));
     }
 }

@@ -77,14 +77,16 @@ return [
     'home' => function()
     {
         if (Auth::user()->hasRole('admin')) {
-            return route('admin.dashboard');
+            return redirect()->route('admin.dashboard');
         }
-        elseif (Auth::user()->hasRole('client')) {
-            return route('user.home');
+        elseif (Auth::user()->hasRole('user')) {
+            return redirect()->route('user.home');
         }
         elseif (Auth::user()->hasRole('restaurant_owner')) {
-            return route('user.home');
+            return redirect()->route('user.home');
         }
+        
+        return redirect('/dashboard');
     },
 
     /*

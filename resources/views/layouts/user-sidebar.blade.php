@@ -12,7 +12,7 @@
     </div>
     <nav class="flex-1 px-4 mt-6 space-y-2 overflow-y-auto custom-scrollbar">
         <a href="/home"
-            class="sidebar-item-active flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all">
+            class=" flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all">
             <span class="material-symbols-outlined text-primary">dashboard</span>
             <span class="text-sm font-medium">Home</span>
         </a>

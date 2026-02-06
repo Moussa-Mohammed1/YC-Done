@@ -13,7 +13,14 @@ class TypeCuisine extends Model
     
     protected $fillable = [
         'titre'
-    ]; 
+    ];
+    
+    // Add accessor for 'nom' to use 'titre'
+    public function getNomAttribute()
+    {
+        return $this->titre;
+    }
+    
     public function restaurants()
     {
         return $this->hasMany(Restaurant::class, 'typeCuisine_id');

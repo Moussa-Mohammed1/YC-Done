@@ -13,6 +13,7 @@ class Plat extends Model
     protected $fillable = [
         'contenu',
         'prix',
+        'menu_id',
     ];
 
     public function menu()

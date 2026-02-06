@@ -27,14 +27,14 @@ class FortifyServiceProvider extends ServiceProvider
             {
                 $user = auth()->user();
                 
-                if ($user->hasRole('Admin')) {
-                    return route('admin.dashboard');
+                if ($user->hasRole('admin')) {
+                    return redirect()->route('admin.dashboard');
                 }
-                elseif ($user->hasRole('client')) {
-                    return route('client.dashboard');
+                elseif ($user->hasRole('user')) {
+                    return redirect()->route('user.home');
                 }
                 elseif ($user->hasRole('restaurant_owner')) {
-                    return route('owner.dashboard');
+                    return redirect()->route('user.home');
                 }
                 
                 return redirect()->intended('/dashboard');

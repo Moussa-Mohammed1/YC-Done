@@ -45,6 +45,8 @@ Route::delete('/favoris/delete', [FavorisController::class, 'destroy'])
 Route::post('/favoris/add',[FavorisController::class, 'store'])->middleware('auth');
 
 Route::get('/Restaurants/create',   [r::class, 'create'])->middleware('auth')->name('create.restaurant');
+Route::post('/Restaurants/store',   [r::class, 'store'])->middleware('auth')->name('store.restaurant');
 Route::get('/favoris', [FavorisController::class, 'index'])->middleware('auth')->name('user.favoris');
 Route::get('/restaurant/{restaurant}', [r::class, 'show'])->middleware('auth')->name('show.restaurant');
+Route::get('/restaurant/{restaurant}/edit', [r::class, 'edit'])->middleware('auth')->name('edit.restaurant');
 Route::get('/mesRestaurants', [r::class, 'owner'])->middleware('auth', 'role:restaurant_owner')->name('myrestaurants');

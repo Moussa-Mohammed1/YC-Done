@@ -13,12 +13,12 @@ class Menu extends Model
         'restaurant_id',
     ];
 
-    public function Restaurant()
+    public function restaurant()
     {
         return $this->belongsTo(Restaurant::class);
     }
 
-    public function Plat()
+    public function plats()
     {
         return $this->hasMany(Plat::class);
     }

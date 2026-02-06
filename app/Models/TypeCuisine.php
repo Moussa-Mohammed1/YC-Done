@@ -14,8 +14,8 @@ class TypeCuisine extends Model
     protected $fillable = [
         'titre'
     ]; 
-    public function Restaurant()
+    public function restaurants()
     {
-        return $this->belongsToMany(Restaurant::class, 'typeCuisine_id');
+        return $this->hasMany(Restaurant::class, 'typeCuisine_id');
     }
 }

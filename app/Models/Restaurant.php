@@ -18,32 +18,32 @@ class Restaurant extends Model
         'capacite',
     ];
 
-    public function TypeCuisine()
+    public function typeCuisine()
     {
         return $this->belongsTo(TypeCuisine::class, 'typeCuisine_id');
     }
 
-    public function Photo()
+    public function photos()
     {
         return $this->hasMany(Photo::class);
     }
 
-    public function Horaire()
+    public function horaires()
     {
         return $this->hasMany(Horaire::class);
     }
 
-    public function Menu()
+    public function menus()
     {
         return $this->hasMany(Menu::class);
     }
 
-    public function User()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function Favoris()
+    public function favoris()
     {
         return $this->hasMany(Favoris::class);
     }

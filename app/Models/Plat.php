@@ -15,7 +15,7 @@ class Plat extends Model
         'prix',
     ];
 
-    public function Menu()
+    public function menu()
     {
         return $this->belongsTo(Menu::class);
     }

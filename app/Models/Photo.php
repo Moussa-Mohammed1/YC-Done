@@ -15,8 +15,8 @@ class Photo extends Model
         'restaurant_id',
     ];
 
-    public function Restaurant()
+    public function restaurant()
     {
-        return $this->belongsTo(Restaurant::class);
+        return $this->belongsTo(Restaurant::class, 'restaurant_id');
     }
 }

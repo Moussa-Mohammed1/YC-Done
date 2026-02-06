@@ -16,7 +16,7 @@ class Horaire extends Model
         'heureFermeture',
     ];
 
-    public function Restaurant()
+    public function restaurant()
     {
         return $this->belongsTo(Restaurant::class);
     }

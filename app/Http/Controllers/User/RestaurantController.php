@@ -1,8 +1,9 @@
 <?php
-
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Menu;
+use App\Models\Photo;
 use App\Models\Restaurant;
 use App\Models\TypeCuisine;
 use App\Models\Plat;
@@ -26,13 +27,15 @@ class RestaurantController extends Controller
             'capacite' => 'required|integer|min:1',
             'status' => 'nullable|in:ACTIVE,INACTIVE',
             'photos' => 'nullable|array',
-            'photos.*' => 'nullable|url',
+            'photo.*' => 'nullable',
             'horaires' => 'nullable|array',
             'horaires.*.jourSemaine' => 'required|string',
-            'horaires.*.heureOuverture' => 'required|date_format:H:i',
-            'horaires.*.heureFermeture' => 'required|date_format:H:i',
+            'horaires.*.heureOuverture' => 'required',
+            'horaires.*.heureFermeture' => 'required',
+            'menutitle' => 'required_with:plats|string|max:255',
             'plats' => 'nullable|array',
-            'plats.*' => 'exists:plats,id',
+            'plats.*.contenu' => 'required|string|max:255',
+            'plats.*.prix' => 'required|numeric|min:0',
         ]);
 
         $restaurant = Restaurant::create([
@@ -43,32 +46,32 @@ class RestaurantController extends Controller
             'capacite' => $validated['capacite'],
             'status' => $validated['status'] ?? 'ACTIVE',
         ]);
+        if (!empty($validated['menutitle'])) {
+            $menu = Menu::create([
+                'title' => $validated['menutitle'],
+                'restaurant_id' => $restaurant->id,
+            ]);
 
-        if (!empty($validated['photos'])) {
-            foreach ($validated['photos'] as $photo) {
-                if (!empty($photo)) {
-                    $restaurant->photos()->create(['contenu' => $photo]);
+            if (!empty($validated['plats'])) {
+                foreach ($validated['plats'] as $plat) {
+                    $menu->plats()->create([
+                        'contenu' => $plat['contenu'],
+                        'prix' => $plat['prix'],
+                    ]);
                 }
             }
         }
-
-        if (!empty($validated['horaires'])) {
-            foreach ($validated['horaires'] as $horaire) {
-                $restaurant->horaires()->create($horaire);
+        $photosUrls =[];
+        if ($request->hasFile('photo')) {
+            foreach ($request->file('photo') as $photo ) {
+                $photosUrls[] =  $photo->store('restaurant/images', 'public');
             }
         }
-        if (!empty($validated['plats'])) {
-            $menu = $restaurant->menus()->create([]);
-            
-            $selectedPlats = Plat::whereIn('id', $validated['plats'])->get();
-            foreach ($selectedPlats as $plat) {
-                $menu->plats()->create([
-                    'contenu' => $plat->contenu,
-                    'prix' => $plat->prix,
-                ]);
-            }
-        }
-
+        foreach ($photosUrls as $path) {
+            $restaurant->photos()->create([
+                'contenu' => $path,
+            ]);
+        };
         return redirect()->route('myrestaurants')->with('success', 'Restaurant créé avec succès!');
     }
 

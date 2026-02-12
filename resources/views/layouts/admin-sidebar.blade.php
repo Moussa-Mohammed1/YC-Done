@@ -2,7 +2,7 @@
             <div class="p-6 flex items-center gap-3">
                 <div
                     class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
-                    <img class="w-10 h-10 rounded-lg" src="https://i.pinimg.com/736x/4b/c7/fe/4bc7fe8ca45dbdab9fbeeaa3fad6c6dc.jpg" alt="">
+                    <img class="w-10 h-10 rounded-lg" src="https://i.pinimg.com/736x/1f/1f/31/1f1f31ea1bab3e9dc55ec45b3aa877fd.jpg" alt="">
                 </div>
                 <h1 class="text-white text-xl font-bold tracking-tight">Youco'Done <span class="text-yellow-500">Admin</span></h1>
             </div>

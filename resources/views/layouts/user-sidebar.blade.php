@@ -16,7 +16,7 @@
             <span class="material-symbols-outlined text-primary">home</span>
             <span class="text-sm font-medium">Home</span>
         </a>
-        <a href="/reservations"
+        <a href="/mesReservations"
             class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-lg cursor-pointer transition-all group">
             <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">calendar_today</span>
             <span class="text-sm font-medium">Mes réservations</span>
@@ -40,10 +40,10 @@
                 <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">storefront</span>
                 <span class="text-sm font-medium">Mes restaurants</span>
             </a>
-            <a href="/done"
+            <a href="/reservations"
                 class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 rounded-lg cursor-pointer transition-all group">
                 <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">analytics</span>
-                <span class="text-sm font-medium">Performances</span>
+                <span class="text-sm font-medium">Reservations</span>
             </a>
         @endif
     </nav>

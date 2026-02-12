@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class RestaurantController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         $restaurants = DB::table('restaurants')
@@ -31,17 +34,18 @@ class RestaurantController extends Controller
             $restaurant->horaires = $horaires;
         }
         return view('admin.restaurants', compact('restaurants'));
-    }
+    } 
 
     public function destroy(Restaurant $restaurant)
     {
+        // $this->authorize('delete', $restaurant);
+
         DB::table('photos')->where('restaurant_id', $restaurant->id)->delete();
         DB::table('menus')->where('restaurant_id', $restaurant->id)->delete();
         DB::table('horaires')->where('restaurant_id', $restaurant->id)->delete();
         DB::table('favoris')->where('restaurant_id', $restaurant->id)->delete();
         $restaurant->delete();
-        return response()->json([
-            'success' => true,
-        ]);
+        
+        return redirect()->route('admin.restaurants');
     }
 }

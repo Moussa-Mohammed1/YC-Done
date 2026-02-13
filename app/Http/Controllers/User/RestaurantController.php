@@ -26,16 +26,16 @@ class RestaurantController extends Controller
             'localisation' => 'required|string|max:255',
             'capacite' => 'required|integer|min:1',
             'status' => 'nullable|in:ACTIVE,INACTIVE',
-            'photos' => 'nullable|array',
-            'photo.*' => 'nullable',
+            'photo' => 'nullable|array',
+            'photo.*' => 'nullable|image|max:5120',
             'horaires' => 'nullable|array',
             'horaires.*.jourSemaine' => 'required|string',
-            'horaires.*.heureOuverture' => 'required',
-            'horaires.*.heureFermeture' => 'required',
-            'menutitle' => 'required_with:plats|string|max:255',
+            'horaires.*.heureOuverture' => 'nullable|required_without:horaires.*.ferme',
+            'horaires.*.heureFermeture' => 'nullable|required_without:horaires.*.ferme',
+            'menutitle' => 'nullable|string|max:255',
             'plats' => 'nullable|array',
-            'plats.*.contenu' => 'required|string|max:255',
-            'plats.*.prix' => 'required|numeric|min:0',
+            'plats.*.contenu' => 'required_with:plats.*.prix|string|max:255',
+            'plats.*.prix' => 'required_with:plats.*.contenu|numeric|min:0',
         ]);
 
         $restaurant = Restaurant::create([
@@ -61,6 +61,27 @@ class RestaurantController extends Controller
                 }
             }
         }
+
+        foreach ($validated['horaires'] ?? [] as $date) {
+            $isClosed = !empty($date['ferme']);
+            if ($isClosed) {
+                $restaurant->horaires()->create([
+                    'jourSemaine' => $date['jourSemaine'],
+                    'closed' => true,
+                ]);
+            } else {
+                $heureOuverture = $date['heureOuverture'] ?? null;
+                $heureFermeture = $date['heureFermeture'] ?? null;
+                if ($heureOuverture === null || $heureFermeture === null) {
+                    continue;
+                }
+                $restaurant->horaires()->create([
+                    'jourSemaine' => $date['jourSemaine'],
+                    'heureFermeture' => $heureFermeture,
+                    'heureOuverture' => $heureOuverture,
+                ]);
+            }
+        }
         $photosUrls =[];
         if ($request->hasFile('photo')) {
             foreach ($request->file('photo') as $photo ) {
@@ -77,6 +98,7 @@ class RestaurantController extends Controller
 
     public function show(Restaurant $restaurant)
     {
+        
         $restaurant->load(['photos', 'typeCuisine', 'user', 'menus.plats', 'horaires']);
         return view('user.restaurant', compact('restaurant'));
     }

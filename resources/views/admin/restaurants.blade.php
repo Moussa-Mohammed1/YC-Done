@@ -107,6 +107,7 @@
                                     Actions</th>
                             </tr>
                         </thead>
+    
                         <tbody class="divide-y divide-slate-100">
                             @if($restaurants->count())
 
@@ -127,16 +128,20 @@
                                         <td class="px-6 py-5 text-sm text-slate-500">
                                             {{ date('d/m/Y', strtotime($restaurant->created_at)) }}
                                         </td>
+                                        
                                         <td class="px-6 py-5 text-right">
                                             <div class="flex justify-end gap-3">
                                                 <button
                                                     class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-bold hover:bg-primary hover:text-white transition-all">Voir</button>
-                                                <button onclick="confirmDelete({{ $restaurant->id }});"
+                                                
+                                                    <button onclick="confirmDelete({{ $restaurant->id }});"
                                                     class="px-3 py-1.5 rounded-lg text-rose-500 hover:bg-rose-50 text-xs font-bold transition-all">
 
                                                     Supprimer</button>
+                                                
                                             </div>
                                         </td>
+                                                
                                     </tr>
                                 @endforeach
                             @else
@@ -179,29 +184,30 @@
                                     </p>
                                 </div>
                             </div>
+                            
                             <div class="bg-slate-50 px-6 py-4 rounded-b-2xl flex gap-3 justify-end">
                                 <button onclick="closeDeleteModal()" type="button"
                                     class="px-5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-100 transition-all">
                                     Annuler
                                 </button>
-                                <div id="deleteForm" class="inline">
-                                    <input type="hidden" id="idresto" value="">
-                                    <button onclick="deleted(event)"
+                                <form id="deleteForm" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
                                         class="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm transition-all shadow-md shadow-rose-600/20">
                                         Supprimer définitivement
                                     </button>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
 
                     <script>
-                        let hiddeinput = document.getElementById('idresto');
                         function confirmDelete(restaurantId) {
                             let modal = document.getElementById('deleteModal');
                             let deleteForm = document.getElementById('deleteForm');
                             let restaurantName = document.getElementById('restaurantName');
-                            hiddeinput.value = restaurantId;
+                            
                             deleteForm.action = `/admin/restaurants/${restaurantId}`;
 
                             let row = event.target.closest('tr');
@@ -214,47 +220,19 @@
                         function closeDeleteModal() {
                             let modal = document.getElementById('deleteModal');
                             modal.classList.add('hidden');
-                            hiddeinput.value = '';
                         }
 
                         document.getElementById('deleteModal')?.addEventListener('click', function (e) {
                             if (e.target === this) {
                                 closeDeleteModal();
-                                hiddeinput.value = '';
                             }
                         });
 
                         document.addEventListener('keydown', function (e) {
                             if (e.key === 'Escape') {
                                 closeDeleteModal();
-                                hiddeinput.value = '';
                             }
                         });
-
-                        function deleted(e) {
-                            let button = e.target.closest('button');
-                            button.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Traitement...';
-                            button.disabled = true;
-                            
-                            let restaurantId = hiddeinput.value;
-                            let token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
-                            
-                            fetch(`/admin/restaurants/${restaurantId}`, {
-                                method: 'DELETE',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': token,
-                                    'Accept': 'application/json'
-                                }
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    window.location.reload();
-                                }
-                            })
-                            ;
-                        }
                     </script>
 
                 </div>

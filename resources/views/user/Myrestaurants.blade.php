@@ -23,6 +23,7 @@
                         "primary": "#2beebd",
                         "background-light": "#f6f8f7",
                         "background-dark": "#10221d",
+                        "sidebar-dark": "#0d1b18",
                     },
                     fontFamily: {
                         "display": ["Work Sans", "sans-serif"]
@@ -95,15 +96,11 @@
                 <div
                     class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden group hover:shadow-xl transition-all duration-300">
                     <div class="relative h-48 overflow-hidden">
-                        @if($restaurant->photos->first())
+                        
                         <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                             alt="Photo de {{ $restaurant->nom }}"
-                            src="{{ $restaurant->photos->first()->contenu }}" />
-                        @else
-                        <div class="w-full h-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
-                            <span class="material-symbols-outlined text-6xl text-slate-400">restaurant</span>
-                        </div>
-                        @endif
+                            src="{{$restaurant->photos->count() ? asset('storage/'. $restaurant->photos->first()->contenu)  : 'https://i.pinimg.com/736x/29/9a/54/299a5472e41588bb852ffc904b6e7bb4.jpg'}}" />
+                        
                         <div class="absolute top-4 left-4">
                             @if($restaurant->status === 'ACTIVE')
                             <span
@@ -134,11 +131,11 @@
                             {{ $restaurant->localisation }}
                         </p>
                         <div class="space-y-2 pt-2">
-                            <button
+                            <a href="{{ route('reservations', $restaurant->id) }}"
                                 class="w-full {{ $restaurant->status === 'ACTIVE' ? 'bg-primary hover:bg-primary/90 text-slate-900' : 'bg-primary/20 cursor-not-allowed text-slate-400' }} font-bold py-2.5 rounded-lg text-sm flex items-center justify-center gap-2 transition-colors">
                                 <span class="material-symbols-outlined text-lg">event_available</span>
                                 Gérer les réservations
-                            </button>
+</a>
                             <div class="grid grid-cols-2 gap-2">
                                 <button
                                     class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition-colors">

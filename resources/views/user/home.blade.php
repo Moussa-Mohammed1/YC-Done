@@ -89,7 +89,8 @@
             <header
                 class="h-20 bg-white dark:bg-background-dark border-b border-slate-200 dark:border-slate-800 px-8 flex items-center justify-between sticky top-0 z-40">
                 <div class="flex items-center gap-4">
-                    <h2 class="text-lg font-semibold">Bonjour, <span class="text-primary font-bold">Jean Dupont</span>
+                    <h2 class="text-lg font-semibold">Bonjour, <span
+                            class="text-primary font-bold">{{ auth()->user()->name }}</span>
                     </h2>
                     <span
                         class="px-3 py-1 bg-primary/20 text-primary text-[11px] font-bold rounded-full uppercase tracking-wider">Mode
@@ -97,12 +98,7 @@
                 </div>
                 <div class="flex items-center gap-6">
                     <div class="relative group">
-                        <button
-                            class="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg transition-all border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
-                            <span class="material-symbols-outlined text-slate-500">notifications</span>
-                            <span
-                                class="absolute top-2 right-4 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"></span>
-                        </button>
+                        @include('layouts.notification')
                     </div>
                     <button
                         class="flex items-center gap-3 px-1.5 py-1.5 bg-slate-100 dark:bg-white/5 hover:bg-primary/10 rounded-full transition-all group">
@@ -160,7 +156,7 @@
                                         <a href="/home"
                                             class="bg-white/10 border border-white/20 text-white font-bold px-6 py-3 rounded-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2 whitespace-nowrap">
                                             <span class="material-symbols-outlined">close</span>
-                                            Réinitialiser   
+                                            Réinitialiser
                                         </a>
                                     @endif
                                 </div>
@@ -198,14 +194,12 @@
                             <div
                                 class="bg-white dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full">
                                 <div class="h-44 bg-cover bg-center relative"
-                                    style="background-image: url('{{ $restaurant->photos->first() ? asset('storage/' . $restaurant->photos->first()->chemin_photo) : 'https://i.pinimg.com/1200x/b8/d9/d6/b8d9d64172e2ecc90fe016692c856c97.jpg' }}')">
+                                    style="background-image: url('{{ $restaurant->photos->first() ? asset('storage/' . $restaurant->photos->first()->contenu) : 'https://i.pinimg.com/1200x/b8/d9/d6/b8d9d64172e2ecc90fe016692c856c97.jpg' }}')">
                                     <!-- <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div> -->
-                                    <button
-                                        data-restaurant-id="{{ $restaurant->id }}"
+                                    <button data-restaurant-id="{{ $restaurant->id }}"
                                         data-is-favoris="{{ $restaurant->isFavoris ? 'true' : 'false' }}"
                                         class="favoris-btn absolute top-3 right-3 h-9 w-9 bg-white/90 dark:bg-sidebar-dark/90 text-slate-400 hover:text-red-500 rounded-full flex items-center justify-center shadow-md transition-colors">
-                                        <span
-                                            class="material-symbols-outlined text text-[20px]"
+                                        <span class="material-symbols-outlined text text-[20px]"
                                             style="{{ $restaurant->isFavoris ? 'font-variation-settings: \'FILL\' 1;' : '' }}">
                                             favorite
                                         </span>
@@ -246,16 +240,16 @@
                         <div id="toast-container"></div>
                         <script>
                             // Use event delegation for dynamically updated content
-                            document.addEventListener('click', function(e) {
+                            document.addEventListener('click', function (e) {
                                 let btn = e.target.closest('.favoris-btn');
                                 if (!btn) return;
-                                
+
                                 e.preventDefault();
-                                
+
                                 let restaurantId = btn.dataset.restaurantId;
                                 let isFavoris = btn.dataset.isFavoris === 'true';
                                 let userId = {{ auth()->user()->id }};
-                                
+
                                 if (isFavoris) {
                                     deleteFavoris(restaurantId, userId);
                                 } else {
@@ -275,15 +269,15 @@
                                         restaurant_id: idr
                                     })
                                 })
-                                .then(res => res.json())
-                                .then(data => {
-                                    showToast(data.message);
-                                    setTimeout(() => location.reload(), 1000);
-                                })
-                                .catch(err => {
-                                    console.error('Error:', err);
-                                    showToast('Erreur essayer une autre fois');
-                                });
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        showToast(data.message);
+                                        setTimeout(() => location.reload(), 1000);
+                                    })
+                                    .catch(err => {
+                                        console.error('Error:', err);
+                                        showToast('Erreur essayer une autre fois');
+                                    });
                             }
 
                             function deleteFavoris(idr, idu) {
@@ -298,15 +292,15 @@
                                         restaurant_id: idr
                                     })
                                 })
-                                .then(res => res.json())
-                                .then(data => {
-                                    showToast(data.message);
-                                    setTimeout(() => location.reload(), 1000);
-                                })
-                                .catch(err => {
-                                    console.error('Error:', err);
-                                    showToast('Erreur lors de la suppression des favoris');
-                                });
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        showToast(data.message);
+                                        setTimeout(() => location.reload(), 1000);
+                                    })
+                                    .catch(err => {
+                                        console.error('Error:', err);
+                                        showToast('Erreur lors de la suppression des favoris');
+                                    });
                             }
 
                             function showToast(message, duration = 3000) {
@@ -341,7 +335,7 @@
                                         class="px-4 py-2 bg-primary text-sidebar-dark font-bold text-sm rounded-lg hover:brightness-110 transition-all flex items-center gap-2">
                                         <span class="material-symbols-outlined text-[20px]">add</span>
                                         Ajouter un restaurant
-</a>
+                                    </a>
                                 </div>
                                 <div class="overflow-x-auto">
                                     <table class="w-full text-left border-collapse">
@@ -373,8 +367,8 @@
                                                                 class="px-2 py-1 bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 text-[10px] font-bold rounded uppercase tracking-tighter">{{ $restaurant->status }}</span>
                                                         </td>
                                                         <td class="px-6 py-4 text-right">
-                                                            <button onclick="openGestion({{ $restaurant }})"
-                                                                class="px-3 py-1.5 border border-slate-200 dark:border-slate-700 text-xs font-bold rounded-lg hover:bg-slate-100 dark:hover:bg-white/10 transition-all">Gérer</button>
+                                                            <a href="{{  }}"
+                                                                class="px-3 py-1.5 border border-slate-200 dark:border-slate-700 text-xs font-bold rounded-lg hover:bg-slate-100 dark:hover:bg-white/10 transition-all">Gérer</a>
                                                         </td>
                                                     </tr>
                                                 @endforeach

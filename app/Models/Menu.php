@@ -11,6 +11,7 @@ class Menu extends Model
     protected $table = 'menus';
     protected $fillable = [
         'restaurant_id',
+        'title',
     ];
 
     public function restaurant()

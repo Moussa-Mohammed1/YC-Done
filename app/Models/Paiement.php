@@ -11,6 +11,7 @@ class Paiement extends Model
         'montant',
         'reservation_id',
         'status',
+        'stripe_payment_intent_id',
     ];
 
     public function Reservation()

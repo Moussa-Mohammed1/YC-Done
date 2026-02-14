@@ -47,5 +47,10 @@ class Restaurant extends Model
     {
         return $this->hasMany(Favoris::class);
     }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
     
 }

@@ -93,19 +93,14 @@
                 </div>
                 <div class="flex items-center gap-6">
                     <div class="relative group">
-                        <button
-                            class="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg transition-all border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
-                            <span class="material-symbols-outlined text-slate-500">notifications</span>
-                            <span
-                                class="absolute top-2 right-4 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"></span>
-                        </button>
+                    @include('layouts.notification')
                     </div>
                     <button
                         class="flex items-center gap-3 px-1.5 py-1.5 bg-slate-100 dark:bg-white/5 hover:bg-primary/10 rounded-full transition-all group">
                         <div class="h-8 w-8 rounded-full bg-cover bg-center ring-2 ring-primary/30"
                             style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAqROC7YrE3MDcAd7g0pkQdnXefYJD5s5RTrVFEkxoMcn2zDeD7Wp-l8G9WCyvugaSMoOzFATppwQKXrNPGZrLOHngOkBuHh_O3VCKaJq72dl8ePeqQLGgs9f8OdxVD93xSbzkNUX8Mgo0sj0hF4A2aa1h5lX-zyD4RUbJi7CZ4cSqIm2L_N0heldRgC1ERKMI7jfMNVbRUFG_kYMBFAIaHhtnvynQPdUeTqvgn7o1YaqiLltaFPuTk_5t0vcWsiv6fHc5vFR16K6A')">
                         </div>
-                        <span class="pr-4 text-sm font-semibold group-hover:text-primary">Jean Dupont</span>
+                        <span class="pr-4 text-sm font-semibold group-hover:text-primary">{{ auth()->user()->name }}</span>
                     </button>
                 </div>
             </header>
@@ -122,7 +117,7 @@
                             <div
                                 class="bg-white dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
                                 <div class="h-48 bg-cover bg-center relative"
-                                    style="background-image: url('{{ $restaurant->photos->first() ? $restaurant->photos->first()->contenu : "https://i.pinimg.com/736x/32/df/98/32df982ae4b0c2c168bf1e7e2986b6e7.jpg" }}')">
+                                    style="background-image: url('{{ $restaurant->photos->first() ? asset('storage/'  . $restaurant->photos->first()->contenu) : "https://i.pinimg.com/736x/32/df/98/32df982ae4b0c2c168bf1e7e2986b6e7.jpg" }}')">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                                     <button data-restaurant-id="{{ $restaurant->id }}"
                                         class="favoris-btn absolute top-3 right-3 h-9 w-9 bg-white/90 dark:bg-sidebar-dark/90 text-slate-400 hover:text-red-500 rounded-full flex items-center justify-center shadow-md transition-colors">
@@ -147,9 +142,9 @@
                                         {{ $restaurant->localisation }}
                                     </p>
                                     <div class="mt-auto">
-                                        <button
+                                        <a href="{{ route('show.restaurant', $restaurant->id) }}"
                                             class="w-full py-3 bg-primary text-sidebar-dark font-black text-sm rounded-xl hover:brightness-110 transition-all shadow-lg shadow-primary/20">Réserver
-                                            une table</button>
+                                            une table</a>
                                     </div>
                                 </div>
                             </div>
